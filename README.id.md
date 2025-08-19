@@ -1,5 +1,5 @@
 #### *Baca dalam bahasa lain:*  
-[![English](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/United-Kingdom.png)](README.md)  
+[![English](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/United-Kingdom.png)](README.md)
 [![Bahasa Indonesia](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Indonesia.png)](README.id.md)      
 
 <img width="1242" height="1656" alt="Netrum Lite Node Hub" src="https://github.com/user-attachments/assets/25ef4166-b3f5-443b-9972-10ab9d403da1" />
@@ -129,5 +129,6 @@ reset-commands.js
 ![Screenshot_19-8-2025_2384_discord com](https://github.com/user-attachments/assets/ea818923-bfb1-438c-b695-bb8fb7bb0454)
 ![Screenshot_19-8-2025_21859_discord com](https://github.com/user-attachments/assets/130ea4e9-34ad-47ee-82ff-91e89f4b7d97)
 ![Screenshot_19-8-2025_21912_discord com](https://github.com/user-attachments/assets/0d1098da-940b-45d4-85ad-551ff833d2a4)
+
 
 
