@@ -1,112 +1,133 @@
-```markdown
-# Auto Email Sender
+#### *Baca dalam bahasa lain:*  
+[![English](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/United-Kingdom.png)](README.md)  
+[![Bahasa Indonesia](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Indonesia.png)](README.id.md)      
 
-Sebuah alat sederhana untuk mengirim email otomatis - jadwalkan dan kirim ke banyak penerima dengan mudah.
+<img width="1242" height="1656" alt="Netrum Lite Node Hub" src="https://github.com/user-attachments/assets/25ef4166-b3f5-443b-9972-10ab9d403da1" />
+
+------
+# Netrum Lite Node Hub
+
+Alat untuk mengelola dan memantau **Netrum Lite Node** Anda langsung dari Discord.  
+Cek status node, saldo wallet, klaim reward, dan lihat log mining di server Discord Anda!
 
 ---
 
 ## ✨ Fitur
-- Penjadwalan email harian otomatis
-- Mendukung banyak penerima
-- Subjek & isi email dari file teks
-- Bisa melampirkan banyak file
-- Dukungan zona waktu
-  
+- Cek status node online/offline  
+- Pantau saldo & alamat wallet  
+- Klaim reward mining  
+- Lihat log mining terbaru  
+- Antarmuka sederhana dengan perintah slash Discord
+
 ---
 
-## 📦 Kebutuhan
-- Python 3.8+ (pastikan sudah terpasang)
-- pip (pengelola paket Python)
-- Akun email yang mendukung SMTP (Gmail, Outlook, Yahoo, dll.)
-- Library yang dibutuhkan:
-  - schedule  
-  - art  
-  - python-dotenv  
-  - pytz  
-  - rich  
+## 📦 Persyaratan
+- Node.js 18+ (disarankan versi LTS terbaru)  
+- Discord Bot Token & Application ID  
+- Netrum Lite Node sudah terpasang dan berjalan  
+- Lingkungan Linux (VPS atau WSL untuk Windows)  
 
 ---
 
 ## 📁 Struktur Folder
-auto-email-sender/
- ├─ bot_email.py
- ├─ .env
- ├─ email_subject.txt
- ├─ email_body.txt
- ├─ email_config.txt
- ├─ requirements.txt
- ├─ timezone_list.txt
- ├─ auto_start.bat
- ├─ banner_utils.py
- ├─ attachments/
- │   ├─ File Anda 1
- │   ├─ File Anda 2
- │   └─ ...
-
----
-
-## ⚙️ Persiapan
-> Klik kanan pada lokasi folder yang diinginkan, lalu pilih **Open in Terminal / PowerShell / Command Prompt**.
-
-### 1. Clone repository ini di Terminal / PowerShell / Command Prompt:
-git clone https://github.com/rerejabal/auto-email-sender.git
-cd auto-email-sender
-
-### 2. Instal dependensi:
-pip install -r requirements.txt
-
-### 3. Siapkan file Anda:
-Ubah file `.env` dengan kredensial email Anda:
-
-⚠️ Gmail memerlukan App Password (bukan password biasa).  
-Buat melalui Google Account → Security → App passwords.  
-Jika tidak ada, cari: *App Password*.  
-Contoh App Password: kjgwxutxzhkyqjkw
-
-EMAIL_SENDER=youremail@gmail.com  
-EMAIL_PASSWORD=yourapppassword  
-
-`email_subject.txt` → subjek email  
-Contoh:
-Lamaran Kerja
-
-`email_body.txt` → isi email  
-Contoh:
-Kepada: HR Department  
-PT. Chang Shin Reksa Jaya  
-
-Dengan hormat,  
-
-Nama saya Thomas Alpha Edisound, dan saya ingin melamar pekerjaan di PT. Chang Shin Reksa Jaya.  
-Saya yakin dapat berkontribusi dalam mendukung visi dan misi perusahaan. Bersama ini saya lampirkan dokumen lamaran untuk dipertimbangkan.  
-
-Saya sangat berharap mendapat kesempatan untuk berdiskusi lebih lanjut mengenai kualifikasi saya dan dapat berkontribusi di perusahaan Bapak/Ibu.  
-
-Terima kasih atas perhatian Bapak/Ibu.  
-
-Hormat saya,  
-Thomas Alpha Edisound  
-
-`email_config.txt` → konfigurasi (penerima, waktu, zona waktu, lampiran)  
-`attachments` → tempat file lampiran  
-
-Contoh email_config.txt:
-RECEIVERS=contoh1@gmail.com,contoh2@gmail.com,contoh3@gmail.com  
-SEND_TIME=07:00  
-TIMEZONE=Asia/Jakarta  
-ATTACHMENTS=CV.pdf,song.mp3,video_pribadi.mp4  
-
----
-
-## ▶️ Cara Menjalankan
-Jika semua sudah dikonfigurasi dengan benar, jalankan bot dengan:
-python bot_email.py
-
-Jika ingin lebih mudah, cukup jalankan file `auto_start.bat` yang sudah tersedia.
-
----
-
-## 🔄 Update Script
-Perbarui script jika tersedia versi baru:
-git pull
 ```
+netrum-lite-node-hub/
+├─ bot.js
+├─ .env
+├─ package.json
+├─ package-lock.json
+└─ reset-commands.js
+```
+---
+## ⚙️ Setup
+### 1. Masuk ke mode root terlebih dahulu
+```
+sudo su
+```
+### 2. Clone repository
+```
+sudo git clone https://github.com/rey-mystic/netrum-lite-node-hub.git
+cd netrum-lite-node-hub
+```
+### 3. Install dependencies
+```
+npm install
+```
+### 4. Konfigurasi .env
+
+Isi variabel lingkungan Anda:
+```
+DISCORD_TOKEN=your_discord_bot_token
+CLIENT_ID=your_discord_app_id
+NETRUM_PATH=/root/.nvm/versions/node/v20.19.4/bin
+MINING_LOG_PATH=/home/mystic/mining.log
+```
+> Pada dasarnya, `NETRUM_PATH` dan `MINING_LOG_PATH` tergantung dari lokasi Anda menginstal Netrum Lite Node dan di mana log mining ditulis. DYOR!
+
+Untuk `NETRUM_PATH`:  
+Harus menunjuk ke folder di mana command netrum (atau script untuk menjalankan node) tersedia.
+```
+which netrum
+```
+or
+```
+whereis netrum
+```
+For `MINING_LOG_PATH`:  
+Harus menunjuk ke file log yang dihasilkan oleh Netrum Lite Node.  
+- Contoh default (jika mengikuti dokumentasi):
+```
+/root/netrum-lite-node/logs/mining.log
+```
+- Jika dipindah, bisa seperti:
+```
+/home/mystic/mining.log
+```
+
+### 5. Membuat Server & Bot Discord
+#### Buat Server Discord
+- Open [Discord](https://discord.com/) and log in.
+- On the left sidebar, click the **+** (Add Server).
+- Select **Create My Own**.
+- Give your server a name, for example: `Netrum Lite Node Hub`.
+- Click **Create** → your server is now ready.
+#### Buat Aplikasi Bot
+- Go to the [Discord Developer Portal](https://discord.com/developers/applications).
+- Click **New Application**, choose a name (e.g. `NetrumHubBot`), then click **Create**.
+- Go to the **Bot** tab → Reset Token → Copy the **Bot Token** (you’ll use this for `DISCORD_TOKEN` in your `.env` file).
+- Go to **General Information** tab → Copy the **Application ID** (you’ll use this for `CLIENT_ID` in your `.env` file).
+   > ⚠️ **Never share your bot token publicly.**
+#### Atur Permission Bot
+- In the bot application settings, open **OAuth2 URL Generator**.
+- Check:
+   - **Scopes:** `bot` and `applications.commands`
+   - **Bot Permissions:** select `Send Messages`, `Read Messages/View Channels`, `Use Slash Commands`
+- Copy the generated invite link, open it in your browser address bar, and select the server you just created.
+- Click **Authorize** → your bot is now added to the server!
+---
+## 🕹️ Cara Menggunakan
+### Jalankan bot:
+```
+node bot.js
+```
+### Reset command (jika ada perubahan):
+```
+reset-commands.js
+```
+### Perintah Slash di Discord:
+
+`/status` → check if node is running  
+`/wallet` → view wallet balance and address  
+`/claim` → claim staking/mining rewards  
+`/mining-log` → view last 10 lines of mining log  
+
+---
+
+## 👩🏻‍💻 Contoh Output
+![Screenshot_19-8-2025_21105_discord com](https://github.com/user-attachments/assets/189c1d53-e345-4114-9a71-d8fc3b2de81f)
+![Screenshot_19-8-2025_21821_discord com](https://github.com/user-attachments/assets/c7bac06e-207f-4037-9e6d-13f6338eec9e)
+![Screenshot_19-8-2025_2384_discord com](https://github.com/user-attachments/assets/ea818923-bfb1-438c-b695-bb8fb7bb0454)
+![Screenshot_19-8-2025_21859_discord com](https://github.com/user-attachments/assets/130ea4e9-34ad-47ee-82ff-91e89f4b7d97)
+![Screenshot_19-8-2025_21912_discord com](https://github.com/user-attachments/assets/0d1098da-940b-45d4-85ad-551ff833d2a4)
+
+
