@@ -7,7 +7,7 @@
 # Netrum Lite Node Hub
 
 A tool to manage and monitor your Netrum Lite Node directly from Discord.  
-Check node status, wallet balance, claim rewards, and view mining logs on your server!
+Check node status, wallet balance, claim rewards, and view mining logs on your Discord server!
 
 ---
 
