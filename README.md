@@ -121,6 +121,8 @@ reset-commands.js
 `/claim` → claim staking/mining rewards  
 `/mining-log` → view last 10 lines of mining log  
 
+---
+
 ## 👩🏻‍💻 Example Output
 ![Screenshot_19-8-2025_21105_discord com](https://github.com/user-attachments/assets/189c1d53-e345-4114-9a71-d8fc3b2de81f)
 ![Screenshot_19-8-2025_21821_discord com](https://github.com/user-attachments/assets/c7bac06e-207f-4037-9e6d-13f6338eec9e)
