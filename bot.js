@@ -18,14 +18,20 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // === Commands ===
 const commands = [
-  new SlashCommandBuilder().setName("status").setDescription("Cek status node"),
-  new SlashCommandBuilder().setName("wallet").setDescription("Cek wallet info"),
-  new SlashCommandBuilder().setName("claim").setDescription("Claim reward"),
-  new SlashCommandBuilder().setName("mining-log").setDescription("Lihat mining log")
+  new SlashCommandBuilder().setName("status").setDescription("Check node status"),
+  new SlashCommandBuilder().setName("wallet").setDescription("Check wallet info"),
+  new SlashCommandBuilder()
+    .setName("claim")
+    .setDescription("Claim reward (run '/claim' for preview, '/claim yes' for confirmation)")
+    .addStringOption(opt =>
+      opt.setName("confirm")
+        .setDescription("Type 'yes' for claim confirmation")
+        .setRequired(false)
+    ),
+  new SlashCommandBuilder().setName("mining-log").setDescription("View mining log")
 ].map(c => c.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
-
 
 // === STEP 2: Deploy new commands ===
 (async () => {
@@ -48,24 +54,70 @@ client.on("interactionCreate", async interaction => {
 
   try {
     if (interaction.commandName === "status") {
-    let out = await runCommand("ps aux | grep netrum | grep -v grep || echo 'stopped'");
-    let result = out === "stopped" ? "❌ Offline" : "✅ Online:\n" + out;
-    await interaction.editReply(`Node status:\n${result}`);
+      let out = await runCommand("ps aux | grep netrum | grep -v grep | grep '^root' | tail -n 1 || echo 'stopped'");
+      let result;
+      if (out === "stopped") {
+      result = "❌  Offline";
+    } else {
+      result = "✅  Online\n" +
+               "```\n" + out + "\n```"; // langsung rapat, tanpa spasi ekstra
+    }
+      await interaction.editReply(`Node Status:\n${result}`);
 
-  } else if (interaction.commandName === "wallet") {
-    let out = await runCommand(`${NETRUM}/netrum-wallet`);
-    await interaction.editReply("Wallet Info:\n```" + out.slice(0, 1800) + "```");
+    } else if (interaction.commandName === "wallet") {
+      let out = await runCommand(`${NETRUM}/netrum-wallet`);
+      await interaction.editReply("Wallet Info:\n```" + out.slice(0, 1800) + "```");
 
-  } else if (interaction.commandName === "claim") {
-    let out = await runCommand(`echo "y" | ${NETRUM}/netrum-claim`);
-    await interaction.editReply("Claim result:\n```" + out.slice(0, 1800) + "```");
+    } else if (interaction.commandName === "claim") {
+      const confirm = interaction.options.getString("confirm");
 
-  } else if (interaction.commandName === "mining-log") {
-    let out = await runCommand(`tail -n 10 ${MINING_LOG}`);
-    if (!out.trim()) out = "❌ Mining log kosong atau belum jalan.";
-    await interaction.editReply("Mining Log:\n```" + out + "```");
-  }
+      if (confirm !== "yes") {
+  
+        let preview = await runCommand(`echo "n" | ${NETRUM}/netrum-claim`);
+        preview = preview.replace(/\x1B\[?.*?[\@-~]/g, "")
+                 .replace(/[^\x20-\x7E\n\r]/g, "")   // remove non-ASCII
+                 .split("\n")
+                 .map(line => line.replace(/^(\?\?\s*)/, "")) // remove ?? at start
+                 .map(line => line.replace(/\?\?/g, ""))      // remove stray ??
+                 .map(line => line.trim())
+                 .filter(line => line.length > 0 && !line.includes("Transaction rejected"))
+                 .join("\n");
 
+        await interaction.editReply(
+          "Claim Preview (not executed yet):\n```" + preview + "```\n" +
+          "To continue, run: `/claim yes`"
+        );
+
+      } else {
+       
+        let out = await runCommand(`echo "y" | ${NETRUM}/netrum-claim`);
+        out = out.slice(0, 1800)
+                 .replace(/\x1B\[?.*?[\@-~]/g, "")
+                 .replace(/[^\x20-\x7E\n\r]/g, "")
+                 .split("\n")
+                 .map(line => line.replace(/^(\?\?\s*)/, ""))
+                 .map(line => line.replace(/\?\?/g, ""))
+                 .map(line => line.trim())
+                 .filter(line => line.length > 0)
+                 .join("\n");
+
+        await interaction.editReply("✅ Claim Result:\n```" + out + "```");
+      }
+
+    } else if (interaction.commandName === "mining-log") {
+      let out = await runCommand(`tail -n 50 ${MINING_LOG}`);
+      if (!out.trim()) out = "❌ Mining log empty or not running.";
+      out = out.replace(/\x1B\[?.*?[\@-~]/g, "")
+               .replace(/\x1Bc/g, "")
+               .split("\n")
+               .map(line => line.trim())
+               .filter(line => line.length > 0 && !line.includes("Error fetching status"));
+
+      let lastActive = out.reverse().find(line => line.includes("Status: ✅ ACTIVE"));
+      if (!lastActive) lastActive = "❌ No active status in the logs.";
+
+      await interaction.editReply("Mining Log (last active):\n```" + lastActive + "```");
+    }
 
   } catch (e) {
     await interaction.editReply("⚠️ Error: " + e);
@@ -73,7 +125,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.once("ready", () => {
-  console.log(`🤖 Bot online sebagai ${client.user.tag}`);
+  console.log(`Bot online as ${client.user.tag}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
