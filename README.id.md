@@ -118,17 +118,15 @@ reset-commands.js
 
 `/status` → check if node is running  
 `/wallet` → view wallet balance and address  
-`/claim` → claim staking/mining rewards  
+`/claim` → claim preview  
+`/claim yes` → claim NPT directly  
 `/mining-log` → view last 10 lines of mining log  
 
 ---
 
-## 👩🏻‍💻 Contoh Output
-![Screenshot_19-8-2025_21105_discord com](https://github.com/user-attachments/assets/189c1d53-e345-4114-9a71-d8fc3b2de81f)
-![Screenshot_19-8-2025_21821_discord com](https://github.com/user-attachments/assets/c7bac06e-207f-4037-9e6d-13f6338eec9e)
-![Screenshot_19-8-2025_2384_discord com](https://github.com/user-attachments/assets/ea818923-bfb1-438c-b695-bb8fb7bb0454)
-![Screenshot_19-8-2025_21859_discord com](https://github.com/user-attachments/assets/130ea4e9-34ad-47ee-82ff-91e89f4b7d97)
-![Screenshot_19-8-2025_21912_discord com](https://github.com/user-attachments/assets/0d1098da-940b-45d4-85ad-551ff833d2a4)
+## 👩🏻‍💻 Example Output
 
+![Screenshot_20-8-2025_93727_discord com](https://github.com/user-attachments/assets/a9514344-a54e-4ce0-93b0-199b0a405274)
+<img width="1345" height="1056" alt="Screenshot 2025-08-20 094020" src="https://github.com/user-attachments/assets/91f32bf5-8a61-4e27-a841-415c5cc94ce4" />
 
 
