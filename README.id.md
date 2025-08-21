@@ -112,7 +112,7 @@ node bot.js
 ```
 ### Reset command:
 > ⚠️Jangan lakukan step ini jika dirasa sudah work. Ini hanya untuk berjaga-jaga jika Anda ingin mengatur ulang command setelah Anda memodifikasinya di `bot.py`   
-> ⚠️Dilakukan reset jika command atau text-nya tidak berubah di tampilan Discord.
+> Dilakukan reset jika command atau text-nya tidak berubah di tampilan Discord.
 ```
 reset-commands.js
 ```
@@ -130,6 +130,7 @@ reset-commands.js
 
 ![Screenshot_20-8-2025_93727_discord com](https://github.com/user-attachments/assets/a9514344-a54e-4ce0-93b0-199b0a405274)
 <img width="1345" height="1056" alt="Screenshot 2025-08-20 094020" src="https://github.com/user-attachments/assets/91f32bf5-8a61-4e27-a841-415c5cc94ce4" />
+
 
 
 
