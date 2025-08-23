@@ -74,7 +74,7 @@ client.on("interactionCreate", async interaction => {
       if (confirm !== "yes") {
   
         let preview = await runCommand(`echo "n" | ${NETRUM}/netrum-claim`);
-        preview = preview.replace(/\x1B\[?.*?[\@-~]/g, "")
+        preview = preview.replace(/\x1B\[[0-9;]*[A-Za-z]/g, "")
                  .replace(/[^\x20-\x7E\n\r]/g, "")   // remove non-ASCII
                  .split("\n")
                  .map(line => line.replace(/^(\?\?\s*)/, "")) // remove ?? at start
@@ -113,7 +113,7 @@ client.on("interactionCreate", async interaction => {
                .map(line => line.trim())
                .filter(line => line.length > 0 && !line.includes("Error fetching status"));
 
-      let lastActive = out.reverse().find(line => line.includes("Status: ✅ ACTIVE"));
+      let lastActive = out.reverse().find(line => line.includes("Status: ✅ ACTIVE") || line.includes("Status: ⏳ CLAIM PENDING"));
       if (!lastActive) lastActive = "❌ No active status in the logs.";
 
       await interaction.editReply("Mining Log (last active):\n```" + lastActive + "```");
