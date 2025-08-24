@@ -86,8 +86,10 @@ or
 ```
 whereis netrum
 ```
+Setelah ketemu, salin path tersebut ke dalam .env.    
+
 For `MINING_LOG_PATH`:  
-Harus diarahkan ke file log yang dihasilkan oleh miner Anda.  
+Harus diarahkan ke file log yang dihasilkan oleh miner Anda.   
 Untuk membuatnya, jalankan miner dengan logging (Linux/WSL/VPS):
 ```
 mkdir -p ~/netrum-lite-node-hub/logs
@@ -141,6 +143,7 @@ node reset-commands.js
 
 ![Screenshot_20-8-2025_93727_discord com](https://github.com/user-attachments/assets/a9514344-a54e-4ce0-93b0-199b0a405274)
 <img width="1345" height="1056" alt="Screenshot 2025-08-20 094020" src="https://github.com/user-attachments/assets/91f32bf5-8a61-4e27-a841-415c5cc94ce4" />
+
 
 
 
