@@ -47,6 +47,14 @@ const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 // === Handler ===
 client.on("interactionCreate", async interaction => {
   if (!interaction.isChatInputCommand()) return;
+  const ALLOWED_CHANNEL_ID = process.env.ALLOWED_CHANNEL_ID;
+  if (interaction.channelId !== ALLOWED_CHANNEL_ID) {
+    return interaction.reply({
+      content: "❌ Commands can only be used in the designated channel. You can't do this, buddy :)",
+       flags: 64
+    });
+  }
+  
   await interaction.deferReply();
 
   const NETRUM = process.env.NETRUM_PATH;
@@ -54,13 +62,14 @@ client.on("interactionCreate", async interaction => {
 
   try {
     if (interaction.commandName === "status") {
-      let out = await runCommand("ps aux | grep netrum | grep -v grep | grep '^root' | tail -n 1 || echo 'stopped'");
+      let out = await runCommand("ps aux | grep 'netrum-lite-node' | grep -v grep | tail -n 1 || echo 'stopped'");
       let result;
       if (out === "stopped") {
       result = "❌  Offline";
     } else {
       result = "✅  Online\n" +
-               "```\n" + out + "\n```"; // langsung rapat, tanpa spasi ekstra
+               "```\n" + out + "\n```";
+               (out.trim() ? "```\n" + out + "\n```" : "(no details)");
     }
       await interaction.editReply(`Node Status:\n${result}`);
 
@@ -75,10 +84,10 @@ client.on("interactionCreate", async interaction => {
   
         let preview = await runCommand(`echo "n" | ${NETRUM}/netrum-claim`);
         preview = preview.replace(/\x1B\[[0-9;]*[A-Za-z]/g, "")
-                 .replace(/[^\x20-\x7E\n\r]/g, "")   // remove non-ASCII
+                 .replace(/[^\x20-\x7E\n\r]/g, "")   
                  .split("\n")
-                 .map(line => line.replace(/^(\?\?\s*)/, "")) // remove ?? at start
-                 .map(line => line.replace(/\?\?/g, ""))      // remove stray ??
+                 .map(line => line.replace(/^(\?\?\s*)/, "")) 
+                 .map(line => line.replace(/\?\?/g, ""))      
                  .map(line => line.trim())
                  .filter(line => line.length > 0 && !line.includes("Transaction rejected"))
                  .join("\n");
@@ -105,19 +114,27 @@ client.on("interactionCreate", async interaction => {
       }
 
     } else if (interaction.commandName === "mining-log") {
-      let out = await runCommand(`tail -n 50 ${MINING_LOG}`);
-      if (!out.trim()) out = "❌ Mining log empty or not running.";
-      out = out.replace(/\x1B\[?.*?[\@-~]/g, "")
-               .replace(/\x1Bc/g, "")
-               .split("\n")
-               .map(line => line.trim())
-               .filter(line => line.length > 0 && !line.includes("Error fetching status"));
+  let out = await runCommand(`tail -n 50 ${MINING_LOG}`);
+  if (!out.trim()) out = "❌ Mining log empty or not running.";
+  out = out.replace(/\x1B\[?.*?[\@-~]/g, "")
+           .replace(/\x1Bc/g, "")
+           .split("\n")
+           .map(line => line.trim())
+           .filter(line => line.length > 0 && !line.includes("Error fetching status"));
 
-      let lastActive = out.reverse().find(line => line.includes("Status: ✅ ACTIVE") || line.includes("Status: ⏳ CLAIM PENDING"));
-      if (!lastActive) lastActive = "❌ No active status in the logs.";
+  let lastActive = out.reverse().find(line => line.includes("Status: ✅ ACTIVE") || line.includes("Status: ⏳ CLAIM PENDING"));
+  if (!lastActive) lastActive = "❌ No active status in the logs.";
 
-      await interaction.editReply("Mining Log (last active):\n```" + lastActive + "```");
-    }
+  let claimPreview = await runCommand(`echo "n" | ${NETRUM}/netrum-claim`);
+  let claimMatch = claimPreview.match(/Claimable Tokens:\s*([\d.]+)/);
+  let claimTokens = claimMatch ? claimMatch[1] : "N/A";
+
+  await interaction.editReply(
+    "Mining Log (last active):\n```" + lastActive + "```\n" +
+    "✅ Claimable (on-chain): " + claimTokens + " NPT"
+  );
+}
+
 
   } catch (e) {
     await interaction.editReply("⚠️ Error: " + e);
