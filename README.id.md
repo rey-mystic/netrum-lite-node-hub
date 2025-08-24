@@ -40,6 +40,7 @@ netrum-lite-node-hub/
 ```
 ---
 ## ⚙️ Setup
+> ⚠️ Menjalankan langsung di Windows PowerShell/CMD tidak didukung karena beberapa perintah dan path khusus Linux. Gunakan WSL atau VPS Linux.
 ### 1. Masuk ke mode root terlebih dahulu
 ```
 sudo su
@@ -57,12 +58,24 @@ npm install
 
 Isi variabel lingkungan Anda:
 ```
+# Konfigurasi Discord Bot
 DISCORD_TOKEN=your_discord_bot_token
 CLIENT_ID=your_discord_app_id
+
+# Ganti dengan ID channel Discord tempat bot diizinkan untuk merespons
+ALLOWED_CHANNEL_ID=id_channel_anda
+
+# Path ke binary netrum
 NETRUM_PATH=/root/.nvm/versions/node/v20.19.4/bin
-MINING_LOG_PATH=/home/mystic/mining.log
+# Atau jika diinstall secara global:
+# NETRUM_PATH=/usr/local/bin/netrum
+
+# Path ke file mining log
+MINING_LOG_PATH=$HOME/netrum-lite-node-hub/logs/mining.log
 ```
-> Pada dasarnya, `NETRUM_PATH` dan `MINING_LOG_PATH` tergantung dari lokasi Anda menginstal Netrum Lite Node dan di mana log mining ditulis. DYOR!
+> - Pada dasarnya, `NETRUM_PATH` dan `MINING_LOG_PATH` tergantung dari lokasi Anda menginstal Netrum Lite Node dan di mana log mining ditulis.  
+> - `$HOME` akan otomatis menyesuaikan: `/root` jika dijalankan sebagai root user. `/home/username` jika dijalankan sebagai user biasa (misalnya: ubuntu, rey, dll).  
+> - Tidak apa-apa, jangan ubah `$HOME` di .env. Jika terjadi error, lakukan riset sendiri!  
 
 Untuk `NETRUM_PATH`:  
 Harus menunjuk ke folder di mana command netrum (atau script untuk menjalankan node) tersedia.
@@ -74,15 +87,13 @@ or
 whereis netrum
 ```
 For `MINING_LOG_PATH`:  
-Harus menunjuk ke file log yang dihasilkan oleh Netrum Lite Node.  
-- Contoh default (jika mengikuti dokumentasi):
+Harus diarahkan ke file log yang dihasilkan oleh miner Anda.  
+Untuk membuatnya, jalankan miner dengan logging (Linux/WSL/VPS):
 ```
-/root/netrum-lite-node/logs/mining.log
+mkdir -p ~/netrum-lite-node-hub/logs
+nohup node ./src/system/mining/live-log.js >> ~/netrum-lite-node-hub/logs/mining.log 2>&1 &
 ```
-- Jika dipindah, bisa seperti:
-```
-/home/mystic/mining.log
-```
+Perintah ini akan menjaga miner tetap berjalan di background dan menulis log ke ~/netrum-lite-node-hub/logs/mining.log.   
 
 ### 5. Membuat Server & Bot Discord
 #### Buat Server Discord
@@ -114,7 +125,7 @@ node bot.js
 > ⚠️Jangan lakukan step ini jika dirasa sudah work. Ini hanya untuk berjaga-jaga jika Anda ingin mengatur ulang command setelah Anda memodifikasinya di `bot.py`   
 > Dilakukan reset jika command atau text-nya tidak berubah di tampilan Discord.
 ```
-reset-commands.js
+node reset-commands.js
 ```
 ### Perintah Slash di Discord:
 
@@ -126,10 +137,11 @@ reset-commands.js
 
 ---
 
-## 👩🏻‍💻 Example Output
+## 👩🏻‍💻 Contoh Output
 
 ![Screenshot_20-8-2025_93727_discord com](https://github.com/user-attachments/assets/a9514344-a54e-4ce0-93b0-199b0a405274)
 <img width="1345" height="1056" alt="Screenshot 2025-08-20 094020" src="https://github.com/user-attachments/assets/91f32bf5-8a61-4e27-a841-415c5cc94ce4" />
+
 
 
 
