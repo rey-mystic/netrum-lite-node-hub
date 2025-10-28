@@ -3,7 +3,7 @@
 [![Bahasa Indonesia](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Indonesia.png)](README.id.md)      
 
 <img width="1242" height="1656" alt="Netrum Lite Node Hub" src="https://github.com/user-attachments/assets/25ef4166-b3f5-443b-9972-10ab9d403da1" />
-     
+      
          
 ------
 # Netrum Lite Node Hub
